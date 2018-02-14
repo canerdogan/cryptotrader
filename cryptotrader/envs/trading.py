@@ -443,7 +443,9 @@ class TradingEnvironment(Env):
         # TODO: FIX TIMESTAMP
 
         # Set index
-        ohlc_df.set_index(ohlc_df.date.transform(lambda x: datetime.fromtimestamp(x).astimezone(timezone.utc)),
+        #ohlc_df.set_index(ohlc_df.date.transform(lambda x: datetime.fromtimestamp(x).astimezone(timezone.utc)),
+        #                  inplace=True, drop=True)
+        ohlc_df.set_index(ohlc_df.date.transform(lambda x: datetime.fromtimestamp(x)),
                           inplace=True, drop=True)
 
         # Get right values to fill nans
@@ -1388,7 +1390,8 @@ class BacktestEnvironment(TradingEnvironment):
 
     @property
     def timestamp(self):
-        return datetime.fromtimestamp(self.tapi.ohlc_data[self.tapi.pairs[0]].index[self.index]).astimezone(timezone.utc)
+        return datetime.fromtimestamp(self.tapi.ohlc_data[self.tapi.pairs[0]].index[self.index])
+        #return datetime.fromtimestamp(self.tapi.ohlc_data[self.tapi.pairs[0]].index[self.index]).astimezone(timezone.utc)
 
     def get_hindsight(self):
         """
@@ -1581,7 +1584,9 @@ class BacktestEnvironment(TradingEnvironment):
         # TODO 1 FIND A BETTER WAY
         # TODO: FIX TIMESTAMP
         # Set index
-        ohlc_df.set_index(ohlc_df.date.transform(lambda x: datetime.fromtimestamp(x).astimezone(timezone.utc)),
+        #ohlc_df.set_index(ohlc_df.date.transform(lambda x: datetime.fromtimestamp(x).astimezone(timezone.utc)),
+        #                  inplace=True, drop=True)
+        ohlc_df.set_index(ohlc_df.date.transform(lambda x: datetime.fromtimestamp(x)),
                           inplace=True, drop=True)
 
         # Disabled fill on backtest for performance.
@@ -1693,7 +1698,8 @@ class TrainingEnvironment(BacktestEnvironment):
 
     @property
     def timestamp(self):
-        return datetime.fromtimestamp(self.data.index[self.index]).astimezone(timezone.utc)
+        return datetime.fromtimestamp(self.data.index[self.index])
+        #return datetime.fromtimestamp(self.data.index[self.index]).astimezone(timezone.utc)
 
     def get_history(self, start=None, end=None, portfolio_vector=False):
         while True:
